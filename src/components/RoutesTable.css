@@ -1,0 +1,25 @@
+.routes-table {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.routes-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.routes-table th, .routes-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.routes-table th {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.routes-table th:hover {
+  background-color: #e6e6e6;
+}
