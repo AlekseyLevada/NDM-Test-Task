@@ -1,4 +1,4 @@
-import './RoutesTable.css';
+import styles from './RoutesTable.module.css';
 import React, { useState } from 'react';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { useObservable } from 'rxjs-hooks';
@@ -44,7 +44,6 @@ const compareAddressWithMask = (a: Route, b: Route): number => {
   if (addressComparison !== 0) return addressComparison;
   return parseInt(a.mask) - parseInt(b.mask);
 };
-
 
 const RoutesTable: React.FC = () => {
   const [sortConfig, setSortConfig] = useState<{ field: keyof Route | null; direction: 'asc' | 'desc' }>({
@@ -93,7 +92,7 @@ const RoutesTable: React.FC = () => {
 
   const getSortIndicator = (field: keyof Route) => {
     if (sortConfig.field !== field) return null;
-    return sortConfig.direction === 'asc' ? '↑' : '↓';
+    return <span className={styles.sortIndicator}>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
   };
 
   const formatAddress = (route: Route) => {
@@ -101,28 +100,37 @@ const RoutesTable: React.FC = () => {
   };
 
   return (
-    <div className="routes-table">
-      <h2>Действующие маршруты IPv4</h2>
-      <table>
-        <thead>
+    <div className={styles.tableContainer}>
+      <h2 className={styles.title}>Действующие маршруты IPv4</h2>
+      <table className={styles.table}>
+        <thead className={styles.header}>
           <tr>
-            <th onClick={() => handleSort('address')}>
+            <th 
+              className={styles.headerCell} 
+              onClick={() => handleSort('address')}
+            >
               Адрес назначения {getSortIndicator('address')}
             </th>
-            <th onClick={() => handleSort('gateway')}>
+            <th 
+              className={styles.headerCell} 
+              onClick={() => handleSort('gateway')}
+            >
               Шлюз {getSortIndicator('gateway')}
             </th>
-            <th onClick={() => handleSort('interface')}>
+            <th 
+              className={styles.headerCell} 
+              onClick={() => handleSort('interface')}
+            >
               Интерфейс {getSortIndicator('interface')}
             </th>
           </tr>
         </thead>
         <tbody>
           {sortedRoutes.map((route) => (
-            <tr key={route.uuid}>
-              <td>{formatAddress(route)}</td>
-              <td>{route.gateway}</td>
-              <td>{route.interface}</td>
+            <tr key={route.uuid} className={styles.row}>
+              <td className={`${styles.cell} ${styles.addressCell}`}>{formatAddress(route)}</td>
+              <td className={`${styles.cell} ${styles.gatewayCell}`}>{route.gateway}</td>
+              <td className={`${styles.cell} ${styles.interfaceCell}`}>{route.interface}</td>
             </tr>
           ))}
         </tbody>
